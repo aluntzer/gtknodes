@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glade-catalog name="gtknodes" library="gtknodes-0.1" depends="gtk+">
+  <glade-widget-classes>
+    <glade-widget-class name="GtkNodesNodeView"   generic-name="gtknodesnodeview"   title="GtkNodes Node View"/>
+    <glade-widget-class name="GtkNodesNode"       generic-name="gtknodesnode"   title="GtkNodes Node" />
+  </glade-widget-classes>
+  <glade-widget-group  name="gtknodes-widgets" title="GtkNodes Widgets">
+    <glade-widget-class-ref name="GtkNodesNodeView" />
+    <glade-widget-class-ref name="GtkNodesNode" />
+  </glade-widget-group>
+</glade-catalog>

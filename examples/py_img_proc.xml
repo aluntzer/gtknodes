@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+<object class="OpNode" id="0">
+<property name="x">1351</property>
+<property name="y">623</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">0</property>
+<signal name="node-socket-connect" handler="3_0" object="3"/>
+<signal name="node-socket-connect" handler="2_1" object="7"/>
+</object>
+<object class="PltNode" id="1">
+<property name="x">1112</property>
+<property name="y">31</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">1</property>
+<signal name="node-socket-connect" handler="3_0" object="17"/>
+</object>
+<object class="PlotNode" id="2">
+<property name="x">599</property>
+<property name="y">818</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">2</property>
+<signal name="node-socket-connect" handler="4_0" object="16"/>
+<signal name="node-socket-connect" handler="4_1" object="16"/>
+</object>
+<object class="CropNode" id="3">
+<property name="x">1079</property>
+<property name="y">396</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">3</property>
+<signal name="node-socket-connect" handler="3_0" object="17"/>
+</object>
+<object class="FlipNode" id="4">
+<property name="x">614</property>
+<property name="y">365</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">4</property>
+<signal name="node-socket-connect" handler="2_0" object="8"/>
+</object>
+<object class="SobelNode" id="5">
+<property name="x">1707</property>
+<property name="y">402</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">5</property>
+<signal name="node-socket-connect" handler="2_0" object="7"/>
+</object>
+<object class="PltNode" id="6">
+<property name="x">1656</property>
+<property name="y">631</property>
+<property name="width">711</property>
+<property name="height">598</property>
+<property name="id">6</property>
+<signal name="node-socket-connect" handler="3_0" object="0"/>
+</object>
+<object class="BlurNode" id="7">
+<property name="x">1377</property>
+<property name="y">409</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">7</property>
+<signal name="node-socket-connect" handler="3_0" object="3"/>
+</object>
+<object class="MaskNode" id="8">
+<property name="x">327</property>
+<property name="y">271</property>
+<property name="width">188</property>
+<property name="height">124</property>
+<property name="id">8</property>
+<signal name="node-socket-connect" handler="2_0" object="13"/>
+</object>
+<object class="PltNode" id="9">
+<property name="x">521</property>
+<property name="y">30</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">9</property>
+<signal name="node-socket-connect" handler="2_0" object="8"/>
+</object>
+<object class="PltNode" id="10">
+<property name="x">1971</property>
+<property name="y">138</property>
+<property name="width">415</property>
+<property name="height">448</property>
+<property name="id">10</property>
+<signal name="node-socket-connect" handler="1_0" object="5"/>
+</object>
+<object class="NumberNode" id="11">
+<property name="x">15</property>
+<property name="y">713</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">11</property>
+<child internal-child="spinbutton">
+ <object class="GtkSpinButton">
+   <property name="value">40.0</property>
+ </object>
+</child>
+</object>
+<object class="PltNode" id="12">
+<property name="x">821</property>
+<property name="y">28</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">12</property>
+<signal name="node-socket-connect" handler="1_0" object="4"/>
+</object>
+<object class="SrcNode" id="13">
+<property name="x">0</property>
+<property name="y">0</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">13</property>
+</object>
+<object class="PltNode" id="14">
+<property name="x">1685</property>
+<property name="y">37</property>
+<property name="width">473</property>
+<property name="height">492</property>
+<property name="id">14</property>
+<signal name="node-socket-connect" handler="2_0" object="7"/>
+</object>
+<object class="PltNode" id="15">
+<property name="x">1404</property>
+<property name="y">33</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">15</property>
+<signal name="node-socket-connect" handler="3_0" object="3"/>
+</object>
+<object class="OperationNode" id="16">
+<property name="x">305</property>
+<property name="y">971</property>
+<property name="width">145</property>
+<property name="height">165</property>
+<property name="id">16</property>
+<signal name="node-socket-connect" handler="1_0" object="11"/>
+<signal name="node-socket-connect" handler="1_1" object="18"/>
+</object>
+<object class="RotateNode" id="17">
+<property name="x">808</property>
+<property name="y">408</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">17</property>
+<signal name="node-socket-connect" handler="1_0" object="4"/>
+</object>
+<object class="NumberNode" id="18">
+<property name="x">6</property>
+<property name="y">858</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">18</property>
+<child internal-child="spinbutton">
+ <object class="GtkSpinButton">
+   <property name="value">6.0</property>
+ </object>
+</child>
+</object>
+</interface>

@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: @PACKAGE_NAME@
+Description: A GTK+ based widget library to create functional flow graphs
+URL: https://space.univie.ac.at
+Version: @PACKAGE_VERSION@
+Requires: gtk+-3.0
+Libs: -L${libdir} -lgtknodes-@PACKAGE_VERSION@
+Cflags:  -I${includedir}/gtknodes

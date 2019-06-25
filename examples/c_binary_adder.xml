@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+<object class="NodeBitwiseAnd" id="0">
+<property name="x">1511</property>
+<property name="y">1156</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">0</property>
+<signal name="node-socket-connect" handler="1_0" object="4"/>
+<signal name="node-socket-connect" handler="1_2" object="2"/>
+</object>
+<object class="NodeBitwiseAnd" id="1">
+<property name="x">1502</property>
+<property name="y">420</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">1</property>
+<signal name="node-socket-connect" handler="1_0" object="8"/>
+<signal name="node-socket-connect" handler="1_2" object="44"/>
+</object>
+<object class="NodeBinaryDecode" id="2">
+<property name="x">310</property>
+<property name="y">912</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">2</property>
+<signal name="node-socket-connect" handler="2_0" object="43"/>
+</object>
+<object class="NodeBitwiseAnd" id="3">
+<property name="x">1511</property>
+<property name="y">1052</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">3</property>
+<signal name="node-socket-connect" handler="1_0" object="10"/>
+<signal name="node-socket-connect" handler="1_2" object="36"/>
+</object>
+<object class="NodeBinaryDecode" id="4">
+<property name="x">366</property>
+<property name="y">258</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">4</property>
+<signal name="node-socket-connect" handler="2_0" object="45"/>
+</object>
+<object class="NodeBitwiseAnd" id="5">
+<property name="x">881</property>
+<property name="y">402</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">5</property>
+<signal name="node-socket-connect" handler="1_0" object="35"/>
+<signal name="node-socket-connect" handler="1_2" object="41"/>
+</object>
+<object class="NodePulse" id="6">
+<property name="x">0</property>
+<property name="y">483</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">6</property>
+</object>
+<object class="NodeBitwiseXor" id="7">
+<property name="x">885</property>
+<property name="y">0</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">7</property>
+<signal name="node-socket-connect" handler="1_0" object="26"/>
+</object>
+<object class="NodeBitwiseXor" id="8">
+<property name="x">1285</property>
+<property name="y">338</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">8</property>
+<signal name="node-socket-connect" handler="3_0" object="4"/>
+<signal name="node-socket-connect" handler="3_2" object="2"/>
+</object>
+<object class="NodeBitwiseAnd" id="9">
+<property name="x">885</property>
+<property name="y">198</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">9</property>
+<signal name="node-socket-connect" handler="8_0" object="4"/>
+<signal name="node-socket-connect" handler="8_2" object="2"/>
+</object>
+<object class="NodeBitwiseXor" id="10">
+<property name="x">1328</property>
+<property name="y">947</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">10</property>
+<signal name="node-socket-connect" handler="1_0" object="4"/>
+<signal name="node-socket-connect" handler="1_2" object="2"/>
+</object>
+<object class="NodeStep" id="11">
+<property name="x">25</property>
+<property name="y">7</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">11</property>
+<signal name="node-socket-connect" handler="1_0" object="6"/>
+<signal name="node-socket-connect" handler="4_1" object="11"/>
+<child internal-child="sb_start">
+ <object class="GtkSpinButton">
+   <property name="value">0</property>
+  </object>
+</child>
+<child internal-child="sb_stop">
+ <object class="GtkSpinButton">
+   <property name="value">255</property>
+  </object>
+</child>
+<child internal-child="sb_step">
+ <object class="GtkSpinButton">
+   <property name="value">2</property>
+  </object>
+</child>
+</object>
+<object class="NodeBitwiseXor" id="12">
+<property name="x">1496</property>
+<property name="y">4</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">12</property>
+<signal name="node-socket-connect" handler="1_0" object="49"/>
+<signal name="node-socket-connect" handler="1_2" object="46"/>
+</object>
+<object class="NodeBinaryEncode" id="13">
+<property name="x">2200</property>
+<property name="y">153</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">13</property>
+<signal name="node-socket-connect" handler="1_0" object="7"/>
+<signal name="node-socket-connect" handler="1_1" object="21"/>
+<signal name="node-socket-connect" handler="1_2" object="50"/>
+<signal name="node-socket-connect" handler="1_3" object="40"/>
+<signal name="node-socket-connect" handler="1_4" object="12"/>
+<signal name="node-socket-connect" handler="1_5" object="48"/>
+<signal name="node-socket-connect" handler="1_6" object="29"/>
+<signal name="node-socket-connect" handler="1_7" object="19"/>
+</object>
+<object class="NodeBitwiseAnd" id="14">
+<property name="x">869</property>
+<property name="y">500</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">14</property>
+<signal name="node-socket-connect" handler="7_0" object="4"/>
+<signal name="node-socket-connect" handler="7_2" object="2"/>
+</object>
+<object class="NodeBitwiseAnd" id="15">
+<property name="x">883</property>
+<property name="y">1133</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">15</property>
+<signal name="node-socket-connect" handler="5_0" object="4"/>
+<signal name="node-socket-connect" handler="5_2" object="2"/>
+</object>
+<object class="NodeBitwiseAnd" id="16">
+<property name="x">880</property>
+<property name="y">1028</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">16</property>
+<signal name="node-socket-connect" handler="1_0" object="32"/>
+<signal name="node-socket-connect" handler="1_2" object="30"/>
+</object>
+<object class="NodeBitwiseAnd" id="17">
+<property name="x">1506</property>
+<property name="y">842</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">17</property>
+<signal name="node-socket-connect" handler="2_0" object="4"/>
+<signal name="node-socket-connect" handler="2_2" object="2"/>
+</object>
+<object class="NodeBitwiseAnd" id="18">
+<property name="x">1505</property>
+<property name="y">733</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">18</property>
+<signal name="node-socket-connect" handler="1_0" object="25"/>
+<signal name="node-socket-connect" handler="1_2" object="47"/>
+</object>
+<object class="NodeBitwiseXor" id="19">
+<property name="x">1513</property>
+<property name="y">951</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">19</property>
+<signal name="node-socket-connect" handler="1_0" object="10"/>
+<signal name="node-socket-connect" handler="1_2" object="36"/>
+</object>
+<object class="NodeBitwiseXor" id="20">
+<property name="x">634</property>
+<property name="y">605</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">20</property>
+<signal name="node-socket-connect" handler="6_0" object="4"/>
+<signal name="node-socket-connect" handler="6_2" object="2"/>
+</object>
+<object class="NodeBitwiseXor" id="21">
+<property name="x">881</property>
+<property name="y">303</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">21</property>
+<signal name="node-socket-connect" handler="1_0" object="35"/>
+<signal name="node-socket-connect" handler="1_2" object="41"/>
+</object>
+<object class="NodeBitwiseAnd" id="22">
+<property name="x">880</property>
+<property name="y">706</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">22</property>
+<signal name="node-socket-connect" handler="1_0" object="20"/>
+<signal name="node-socket-connect" handler="1_2" object="34"/>
+</object>
+<object class="NodeBinaryEncode" id="23">
+<property name="x">2222</property>
+<property name="y">905</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">23</property>
+<signal name="node-socket-connect" handler="1_0" object="28"/>
+</object>
+<object class="NodeBitwiseAnd" id="24">
+<property name="x">1496</property>
+<property name="y">104</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">24</property>
+<signal name="node-socket-connect" handler="1_0" object="49"/>
+<signal name="node-socket-connect" handler="1_2" object="46"/>
+</object>
+<object class="NodeBitwiseXor" id="25">
+<property name="x">1296</property>
+<property name="y">631</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">25</property>
+<signal name="node-socket-connect" handler="2_0" object="4"/>
+<signal name="node-socket-connect" handler="2_2" object="2"/>
+</object>
+<object class="NodeBitwiseXor" id="26">
+<property name="x">606</property>
+<property name="y">21</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">26</property>
+<signal name="node-socket-connect" handler="8_0" object="4"/>
+<signal name="node-socket-connect" handler="8_2" object="2"/>
+</object>
+<object class="NodeBitwiseAnd" id="27">
+<property name="x">1505</property>
+<property name="y">525</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">27</property>
+<signal name="node-socket-connect" handler="3_0" object="4"/>
+<signal name="node-socket-connect" handler="3_2" object="2"/>
+</object>
+<object class="NodeBitwiseOr" id="28">
+<property name="x">1697</property>
+<property name="y">1105</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">28</property>
+<signal name="node-socket-connect" handler="1_0" object="3"/>
+<signal name="node-socket-connect" handler="1_2" object="0"/>
+</object>
+<object class="NodeBitwiseXor" id="29">
+<property name="x">1515</property>
+<property name="y">628</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">29</property>
+<signal name="node-socket-connect" handler="1_0" object="25"/>
+<signal name="node-socket-connect" handler="1_2" object="47"/>
+</object>
+<object class="NodeBitwiseOr" id="30">
+<property name="x">1061</property>
+<property name="y">761</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">30</property>
+<signal name="node-socket-connect" handler="1_0" object="22"/>
+<signal name="node-socket-connect" handler="1_2" object="39"/>
+</object>
+<object class="NodeShowNumber" id="31">
+<property name="x">2226</property>
+<property name="y">670</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">31</property>
+<signal name="node-socket-connect" handler="8_0" object="23"/>
+</object>
+<object class="NodeBitwiseXor" id="32">
+<property name="x">624</property>
+<property name="y">917</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">32</property>
+<signal name="node-socket-connect" handler="5_0" object="4"/>
+<signal name="node-socket-connect" handler="5_2" object="2"/>
+</object>
+<object class="NodeShowNumber" id="33">
+<property name="x">2226</property>
+<property name="y">541</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">33</property>
+<signal name="node-socket-connect" handler="8_0" object="13"/>
+</object>
+<object class="NodeBitwiseOr" id="34">
+<property name="x">1075</property>
+<property name="y">457</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">34</property>
+<signal name="node-socket-connect" handler="1_0" object="5"/>
+<signal name="node-socket-connect" handler="1_2" object="14"/>
+</object>
+<object class="NodeBitwiseXor" id="35">
+<property name="x">629</property>
+<property name="y">317</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">35</property>
+<signal name="node-socket-connect" handler="7_0" object="4"/>
+<signal name="node-socket-connect" handler="7_2" object="2"/>
+</object>
+<object class="NodeBitwiseOr" id="36">
+<property name="x">1693</property>
+<property name="y">782</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">36</property>
+<signal name="node-socket-connect" handler="1_0" object="18"/>
+<signal name="node-socket-connect" handler="1_2" object="17"/>
+</object>
+<object class="NodeBitwiseAnd" id="37">
+<property name="x">1495</property>
+<property name="y">211</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">37</property>
+<signal name="node-socket-connect" handler="4_0" object="4"/>
+<signal name="node-socket-connect" handler="4_2" object="2"/>
+</object>
+<object class="NodeBitwiseAnd" id="38">
+<property name="x">885</property>
+<property name="y">99</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">38</property>
+<signal name="node-socket-connect" handler="1_0" object="26"/>
+</object>
+<object class="NodeBitwiseAnd" id="39">
+<property name="x">881</property>
+<property name="y">809</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">39</property>
+<signal name="node-socket-connect" handler="6_0" object="4"/>
+<signal name="node-socket-connect" handler="6_2" object="2"/>
+</object>
+<object class="NodeBitwiseXor" id="40">
+<property name="x">879</property>
+<property name="y">919</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">40</property>
+<signal name="node-socket-connect" handler="1_0" object="32"/>
+<signal name="node-socket-connect" handler="1_2" object="30"/>
+</object>
+<object class="NodeBitwiseOr" id="41">
+<property name="x">1063</property>
+<property name="y">153</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">41</property>
+<signal name="node-socket-connect" handler="1_0" object="38"/>
+<signal name="node-socket-connect" handler="1_2" object="9"/>
+</object>
+<object class="NodeStep" id="42">
+<property name="x">28</property>
+<property name="y">807</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">42</property>
+<signal name="node-socket-connect" handler="1_0" object="6"/>
+<signal name="node-socket-connect" handler="4_1" object="42"/>
+<child internal-child="sb_start">
+ <object class="GtkSpinButton">
+   <property name="value">0</property>
+  </object>
+</child>
+<child internal-child="sb_stop">
+ <object class="GtkSpinButton">
+   <property name="value">255</property>
+  </object>
+</child>
+<child internal-child="sb_step">
+ <object class="GtkSpinButton">
+   <property name="value">7</property>
+  </object>
+</child>
+</object>
+<object class="NodeConvertNumber" id="43">
+<property name="x">336</property>
+<property name="y">694</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">43</property>
+<signal name="node-socket-connect" handler="3_0" object="42"/>
+</object>
+<object class="NodeBitwiseOr" id="44">
+<property name="x">1686</property>
+<property name="y">155</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">44</property>
+<signal name="node-socket-connect" handler="1_0" object="24"/>
+<signal name="node-socket-connect" handler="1_2" object="37"/>
+</object>
+<object class="NodeConvertNumber" id="45">
+<property name="x">365</property>
+<property name="y">12</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">45</property>
+<signal name="node-socket-connect" handler="3_0" object="11"/>
+</object>
+<object class="NodeBitwiseOr" id="46">
+<property name="x">1075</property>
+<property name="y">1065</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">46</property>
+<signal name="node-socket-connect" handler="1_0" object="16"/>
+<signal name="node-socket-connect" handler="1_2" object="15"/>
+</object>
+<object class="NodeBitwiseOr" id="47">
+<property name="x">1689</property>
+<property name="y">463</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">47</property>
+<signal name="node-socket-connect" handler="1_0" object="1"/>
+<signal name="node-socket-connect" handler="1_2" object="27"/>
+</object>
+<object class="NodeBitwiseXor" id="48">
+<property name="x">1499</property>
+<property name="y">316</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">48</property>
+<signal name="node-socket-connect" handler="1_0" object="8"/>
+<signal name="node-socket-connect" handler="1_2" object="44"/>
+</object>
+<object class="NodeBitwiseXor" id="49">
+<property name="x">1276</property>
+<property name="y">0</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">49</property>
+<signal name="node-socket-connect" handler="4_0" object="4"/>
+<signal name="node-socket-connect" handler="4_2" object="2"/>
+</object>
+<object class="NodeBitwiseXor" id="50">
+<property name="x">874</property>
+<property name="y">606</property>
+<property name="width">100</property>
+<property name="height">100</property>
+<property name="id">50</property>
+<signal name="node-socket-connect" handler="1_0" object="20"/>
+<signal name="node-socket-connect" handler="1_2" object="34"/>
+</object>
+</interface>
