@@ -12,6 +12,13 @@ LT_INIT([dlopen])
 
 GOBJECT_INTROSPECTION_CHECK([1.40.0])
 
+m4_ifdef([VAPIGEN_CHECK], [
+VAPIGEN_CHECK([0.48])
+],[
+AM_CONDITIONAL([ENABLE_VAPIGEN], false)
+])
+
+
 m4_ifdef([GTK_DOC_CHECK], [
 GTK_DOC_CHECK([1.31],[--flavour no-tmpl])
 ],[
@@ -38,6 +45,8 @@ AC_CONFIG_FILES([gtknodes.pc])
 
 AC_OUTPUT([Makefile])
 AC_OUTPUT([src/Makefile])
+AC_OUTPUT([introspection/Makefile])
+AC_OUTPUT([vapi/Makefile])
 AC_OUTPUT([examples/Makefile])
 AC_OUTPUT([glade/Makefile])
 AC_OUTPUT([docs/reference/gtknodes/Makefile])

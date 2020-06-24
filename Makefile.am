@@ -1,4 +1,4 @@
-SUBDIRS = src glade
+SUBDIRS = src introspection vapi glade
 EXTRA_DIST = autogen.sh
 ACLOCAL_AMFLAGS = -Im4
 DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
