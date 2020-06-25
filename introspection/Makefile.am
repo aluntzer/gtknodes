@@ -1,6 +1,9 @@
 
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(top_srcdir)/src --warn-all
+INTROSPECTION_SCANNER_ARGS = \
+			     --c-include=gtknode.h \
+			     --add-include-path=$(top_srcdir)/src \
+			     --warn-all
 INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)/src
 
 if HAVE_INTROSPECTION

@@ -29,6 +29,7 @@
 #error "Only <gtk/gtk.h> can be included directly."
 #endif
 
+#include <gtknodeview.h>
 #include <gtknodesocket.h>
 #include <gtk/gtkbox.h>
 
