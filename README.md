@@ -143,6 +143,12 @@ sudo apt install \
 
 ```
 
+# Packages
+
+Arch Linux:
+
+Available in AUR as [gtknodes-git](https://aur.archlinux.org/packages/gtknodes-git/)
+
 
 # Notes
 
