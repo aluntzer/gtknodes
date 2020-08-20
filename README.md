@@ -128,6 +128,21 @@ and the application of a filter to the spectral data received by the telescope.
 ![RadTel](./screenshots/radtel.gif)
 
 
+# Build dependencies 
+
+Ubuntu:
+
+```
+sudo apt install \
+  gobject-introspection \
+  gtk-doc-tools \
+  libtool \
+  autoconf \
+  automake \
+  libgladeui-dev
+
+```
+
 
 # Notes
 
