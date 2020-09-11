@@ -127,6 +127,27 @@ and the application of a filter to the spectral data received by the telescope.
 
 ![RadTel](./screenshots/radtel.gif)
 
+# Building
+
+If you want to use this library from python or any other language using
+gobject introspection bindings, make sure the build tools (g-ir-scanner,
+g-ir-compiler). If bindings are still not generated, enable introspection
+explicitly:
+
+
+```
+./configure --enable-introspection=yes
+
+```
+
+If you want to try the python example without installing the library system-wide,
+make sure to export the proper paths, i.e. from the examples/ subdirectory
+run the demo like this:
+
+```
+GI_TYPELIB_PATH=../src/ LD_LIBRARY_PATH=../src/.libs python img.py
+```
+
 
 # Build dependencies 
 
