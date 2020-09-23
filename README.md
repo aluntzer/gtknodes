@@ -125,6 +125,9 @@ can already be constructed very easily in this example is a grid observation
 program in a celestial coordinate system (Horizon, Equatorial or Galactic)
 and the application of a filter to the spectral data received by the telescope.
 
+If you want to try it for yourself, see [radtel](https://github.com/aluntzer/radtel).
+The nodes support is still incomplete, you can find it on the *gtknodes* branch.
+
 ![RadTel](./screenshots/radtel.gif)
 
 # Building
