@@ -1,21 +1,21 @@
 # GtkNodes
 
-This library provides a (hopefully) easy-to-use interface to
-create functional flow graphs with the ablility to pass arbitrary data
+This library provides a (hopefully) easy-to-use interface for the creation
+of functional flow graphs with the ablility to pass arbitrary data
 between connected elements.
 
 The flow graph is managed in NodeView, which is a graphical connection manager
-between the graph's functional element (Nodes). Nodes are custom GtkWidget
-container (derived from GtkBox), which hold one or more items (i.e. other
+for the graph's functional element (Nodes). Nodes are custom GtkWidget
+containers (derived from GtkBox), which hold one or more items (i.e. other
 widgets). When a widget is added to a node, it will be assigned a NodeSocket,
 which represents (and manages) the actual connectivity between nodes.
 
 A NodeSocket can be configured in one of 3 modes: SINK, SOURCE and DISABLE.
-SINKS accept a single input and are connected to a SOURCE by a drag-and-drop
+SINKs accept a single input and are connected to a SOURCE by a drag-and-drop
 operation from a source socket to a sink socket. SOURCEs can have an arbitrary
 number of connected outputs.
-A socket in SINK mode will be displayed vertially centered to its associated
-widget and on the left edge of the Node, while sockets in SOURCE mode are
+A socket in SINK mode will be displayed vertically centered to its associated
+widget and on the left edge of the node, while sockets in SOURCE mode are
 drawn on the right edge of the node. Sockets in mode DISABLE are simply not
 drawn.
 
@@ -26,14 +26,14 @@ If a drag operation is started on top of a connected sink, its source will be
 disconnected and the drag event will be redirected to the source, just as if
 the user had initiated the drag event on the source.
 This method is also how the user would drop an existing connection between
-nodes: by starting the drag on the sink and the simply aborting the drag.
+nodes: by starting the drag on the sink and then simply aborting the drag.
 
 In order to ensure (data format) compatbility between nodes, a numerical
-key can be configured. If a key changes or a connection to a socket with an
+key can be configured. If the key changes, or a connection to a socket with an
 incompatible key is attempted, the connection will be either dropped or rejected.
 A key value of 0 for sinks is special, in that they will accept any input.
 
-In order to visualize compatible socket, an RGBA value can be set.
+In order to visualize compatible sockets, an RGBA value can be set.
 
 
 ## Nodes
@@ -53,7 +53,7 @@ GtkExpander and the sockets visible.
 To receive data on a socket, connect to the "socket-incoming" signal
 just as you would for any other Gtk/Glib signal.
 
-All data are passed as GByteArray in order to accomodate arbitrary formats
+All data are passed encapsulated in a GByteArray in order to accomodate arbitrary formats
 and also so that Nodes can be introspected and used with other languages.
 
 To write data on a socket, a function is provided which requires the
@@ -91,13 +91,13 @@ the function would return an allocated string containing:
 
 The weird thing is that GtkBuilder apparently wants to add the internal
 children to the GtkNode widget, even though the "internal-child" property is
-set. This obviously fails, resulting in a warning message to be printed,
+set. This obviously fails, resulting in a warning message,
 however the restoration of the child's property succeeds. I have not
 yet figured out, why this is the case, maybe this requires another builder
 class function to be implemented, or I may have misunderstood the intention
 of "internal-child".
 
-Example nodes demonstrating this are found in examples/nodes/node_step.c for
+Example nodes demonstrating this functionality are found in examples/nodes/node_step.c for
 the C demonstrator and in class NumberNode for the Python demo (examples/img.py).
 
 
@@ -181,7 +181,7 @@ Available in AUR as [gtknodes-git](https://aur.archlinux.org/packages/gtknodes-g
   and Nodes in both C and Python. These examples cover pretty much every
   aspect of this library.
 
-- While possible, using a #GtkNodesNode outside of a #GtkNodesNodeView does 
+- While possible, using a GtkNodesNode outside of a GtkNodesNodeView does 
   not make much sense.
 
 - The placement of sockets is currently only properly supported for the
@@ -191,7 +191,17 @@ Available in AUR as [gtknodes-git](https://aur.archlinux.org/packages/gtknodes-g
   heavily inspired by how nodes work in Blender.
 
 - I realize that there are lot of features you might want to see right now,
-  such as  snap-to-grid, auto-layout,  zoomability or one thing I'd like to
+  such as snap-to-grid, auto-layout, zoomability, or one thing I'd like to
   have in the near future: collapsible node groups (essentially a Node with a
   NodeView inside). All of this will have to wait bit, unfortunately, I'll be
   short on time for a while. I accept patches though :)
+
+
+
+# Licensing
+
+GtkNodes is released under the terms of the GNU Lesser General Public License,
+version 2.1 or, at your option, any later version, as published by the Free
+Software Foundation.
+
+Please, see the [`COPYING`](./COPYING) file for further information.
