@@ -163,7 +163,8 @@ sudo apt install \
   libtool \
   autoconf \
   automake \
-  libgladeui-dev
+  libgladeui-dev \
+  libgirepository1.0-dev
 
 ```
 
