@@ -1745,7 +1745,7 @@ gtk_nodes_node_get_expanded (GtkNodesNode *node)
  */
 
 void
-gtk_nodes_node_set_expaned (GtkNodesNode *node,
+gtk_nodes_node_set_expanded (GtkNodesNode *node,
                             gboolean expanded)
 {
   GtkNodesNodePrivate *priv;
