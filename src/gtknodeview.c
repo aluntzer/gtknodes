@@ -1560,7 +1560,9 @@ gtk_nodes_node_view_load (GtkNodesNodeView *node_view,
  	 	 GObject *n = l->data;
 
 	   l = l->next;
-   	 gtk_container_add(GTK_CONTAINER(node_view), GTK_WIDGET(n));
+
+     if (gtk_widget_get_parent(GTK_WIDGET(n)) == NULL)
+       gtk_container_add(GTK_CONTAINER(node_view), GTK_WIDGET(n));
  	 }
 
 	gtk_builder_connect_signals_full (builder,
