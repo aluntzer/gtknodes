@@ -41,12 +41,14 @@ fi
 AC_SUBST(GLADEUI_CATDIR, $ac_gladeui_catdir)
 
 
-AC_CONFIG_FILES([gtknodes.pc])
 
-AC_OUTPUT([Makefile])
-AC_OUTPUT([src/Makefile])
-AC_OUTPUT([introspection/Makefile])
-AC_OUTPUT([vapi/Makefile])
-AC_OUTPUT([examples/Makefile])
-AC_OUTPUT([glade/Makefile])
-AC_OUTPUT([docs/reference/gtknodes/Makefile])
+AC_CONFIG_FILES([Makefile
+		 src/Makefile
+		 introspection/Makefile
+		 vapi/Makefile
+		 examples/Makefile
+		 glade/Makefile
+		 docs/reference/gtknodes/Makefile
+		 gtknodes.pc
+		])
+AC_OUTPUT
