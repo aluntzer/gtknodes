@@ -615,6 +615,7 @@ gtk_nodes_node_view_move_child (GtkNodesNodeView      *node_view,
   /* "raise" window, drawing occurs from start -> end of list */
   priv->children = g_list_append( g_list_remove (priv->children, child), child);
 
+  /* queue draw for smooth refresh while the drag action is going on */
   gtk_widget_queue_draw (GTK_WIDGET (node_view));
 }
 
@@ -770,6 +771,11 @@ gtk_nodes_node_view_child_button_release_event (GtkWidget         *widget,
     gtk_nodes_node_unblock_expander (GTKNODES_NODE (child->widget));
 
   priv->action = ACTION_NONE;
+
+  /* "raise" last clicked window, drawing occurs from start -> end of list */
+  priv->children = g_list_append( g_list_remove (priv->children, child), child);
+
+  gtk_widget_queue_draw (GTK_WIDGET (node_view));
 
   return GDK_EVENT_PROPAGATE;
 }
