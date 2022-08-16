@@ -1969,6 +1969,24 @@ gtk_nodes_node_item_add (GtkNodesNode         *node,
   return gtk_nodes_node_item_add_real (node, widget, mode);
 }
 
+
+/**
+ * gtk_nodes_node_item_remove:
+ * @node: a GtkNodesNode
+ * @widget: a widget to remove
+ *
+ * This removes an item and its corresponding socket from a GtkNodesNode
+ *´
+ */
+
+void
+gtk_nodes_node_item_remove (GtkNodesNode         *node,
+                            GtkWidget            *widget)
+{
+  return gtk_nodes_node_remove (node, widget);
+}
+
+
 /**
  * gtk_nodes_node_new:
  *

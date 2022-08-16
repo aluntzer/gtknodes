@@ -91,6 +91,8 @@ GDK_AVAILABLE_IN_ALL
 GtkWidget*     gtk_nodes_node_item_add          (GtkNodesNode         *node,
                                                  GtkWidget            *widget,
                                                  GtkNodesNodeSocketIO  type);
+void           gtk_nodes_node_item_remove       (GtkNodesNode         *node,
+                                                 GtkWidget            *widget);
 void           gtk_nodes_node_item_set_expand   (GtkNodesNode         *node,
                                                  GtkWidget            *child,
                                                  gboolean              expand);
