@@ -1263,6 +1263,14 @@ gtk_nodes_node_item_add_real (GtkNodesNode         *node,
         child_info->socket = gtk_nodes_node_socket_new();
   }
 
+
+  if (priv->event_window)
+  {
+    gtk_widget_set_parent_window (child_info->item,   priv->event_window);
+    gtk_widget_set_parent_window (child_info->socket, priv->event_window);
+  }
+
+
   /* we set an incremental socket id here, so a node item can later be
    * identified for restoring socket connections when loading from
    * XML via gtknodeview
@@ -1316,13 +1324,6 @@ gtk_nodes_node_item_add_real (GtkNodesNode         *node,
 
   gtk_widget_set_parent(child_info->socket, GTK_WIDGET (node));
   gtk_widget_set_visible(child_info->socket, TRUE);
-
-  if (priv->event_window)
-    {
-      gtk_widget_set_parent_window (child_info->item,   priv->event_window);
-      gtk_widget_set_parent_window (child_info->socket, priv->event_window);
-    }
-
 
   return child_info->socket;
 }
