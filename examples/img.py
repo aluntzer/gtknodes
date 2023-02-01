@@ -942,7 +942,19 @@ class Demo(object):
         self.node_view.show_all()
 
     def create_imgsrcnode(self, widget=None):
-        self.node_view.add(ImgSrcNode())
+
+        # how to place a node at an arbitrary location:
+
+        pointer = self.node_view.get_display().get_default_seat().get_pointer()
+        # x, y are in [1,2]
+        pos = self.node_view.get_window().get_device_position(pointer)
+
+        node = ImgSrcNode()
+
+        self.node_view.add(node)
+        self.node_view.child_set_property(node, "x", pos[1]);
+        # we set x only, we're out of the canvas when selecting from the button bar
+        # self.node_view.child_set_property(node, "y", pos[2]);
         self.node_view.show_all()
 
     def create_imgpltnode(self, widget=None):

@@ -16,9 +16,35 @@
 #include <node_bitwise_not.h>
 
 
+/**
+ * demo of creating the widget at the mouse pointer position
+ */
+
 static void node_view_create_pulse_cb(GtkWidget *menu, GtkWidget *node_view)
 {
-	gtk_container_add(GTK_CONTAINER(node_view), node_pulse_new());
+	gint x, y;
+	GtkWidget *w;
+	GdkWindow *win;
+	GdkSeat *seat;
+	GdkDevice *ptr;
+	GValue pos = G_VALUE_INIT;
+
+
+	seat = gdk_display_get_default_seat(gdk_display_get_default());
+	ptr = gdk_seat_get_pointer(seat);
+	win = gtk_widget_get_window(node_view);
+	gdk_window_get_device_position(win, ptr, &x, &y, NULL);
+
+	w = node_pulse_new();
+	gtk_container_add(GTK_CONTAINER(node_view), w);
+
+	g_value_init(&pos, G_TYPE_INT);
+
+	g_value_set_int (&pos, x);
+	gtk_container_child_set_property(GTK_CONTAINER(node_view), w, "x", &pos);
+
+	g_value_set_int (&pos, y);
+	gtk_container_child_set_property(GTK_CONTAINER(node_view), w, "y", &pos);
 }
 
 static void node_view_create_step_cb(GtkWidget *menu, GtkWidget *node_view)
