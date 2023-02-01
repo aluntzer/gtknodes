@@ -922,8 +922,13 @@ gtk_nodes_node_button_release (GtkWidget      *widget,
 
   priv = gtk_nodes_node_get_instance_private (GTKNODES_NODE (widget));
 
-  if (priv->activate_id)
+  if (priv->activate_id) {
 	  g_signal_emit (widget, node_signals[NODE_FUNC_CLICKED], 0);
+  }
+
+  if (GDK_IS_WINDOW(priv->event_window)) {
+    gdk_window_raise(priv->event_window);
+  }
 
   return TRUE;
 }
@@ -1983,7 +1988,7 @@ void
 gtk_nodes_node_item_remove (GtkNodesNode         *node,
                             GtkWidget            *widget)
 {
-  return gtk_nodes_node_remove (node, widget);
+  gtk_nodes_node_remove (GTK_CONTAINER(node), widget);
 }
 
 
