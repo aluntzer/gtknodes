@@ -148,7 +148,7 @@ make sure to export the proper paths, i.e. from the examples/ subdirectory
 run the demo like this:
 
 ```
-GI_TYPELIB_PATH=../src/ LD_LIBRARY_PATH=../src/.libs python img.py
+GI_TYPELIB_PATH=../introspection/ LD_LIBRARY_PATH=../src/.libs python img.py
 ```
 
 
