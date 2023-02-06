@@ -69,6 +69,14 @@ typedef enum
   NUM_ACTIONS
 } Action;
 
+/* Signals */
+enum
+{
+  NODE_DRAG_BEGIN,
+  NODE_DRAG_END,
+  LAST_SIGNAL
+};
+
 
 struct _GtkNodesNodeViewPrivate
 {
@@ -165,18 +173,21 @@ static gboolean gtk_nodes_node_view_point_in_rectangle  (GdkRectangle        *re
                                                          gint                 x,
                                                          gint                 y);
 
+static guint node_view_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_PRIVATE(GtkNodesNodeView, gtk_nodes_node_view, GTK_TYPE_CONTAINER)
 
 
 static void gtk_nodes_node_view_class_init(GtkNodesNodeViewClass *class)
 {
+  GObjectClass      *gobject_class;
   GtkWidgetClass    *widget_class;
   GtkContainerClass *container_class;
 
 
   widget_class    = GTK_WIDGET_CLASS(class);
   container_class = GTK_CONTAINER_CLASS(class);
+  gobject_class   = G_OBJECT_CLASS (class);
 
   /* widget basics */
   widget_class->map           = gtk_nodes_node_view_map;
@@ -231,6 +242,47 @@ static void gtk_nodes_node_view_class_init(GtkNodesNodeViewClass *class)
                                                                 "requested height of Node",
                                                                 G_MININT, G_MAXINT, 0,
                                                                 GTK_NODES_VIEW_PARAM_RW));
+
+
+    /**
+   * GtkNodesNodeSocket::node-drag-begin:
+   * @widget: the object which received the signal.
+   *
+   * The ::node-drag-begin signal is emitted when the user begins a drag
+   * on the socket handle.
+   *
+   */
+
+  node_view_signals[NODE_DRAG_BEGIN] =
+    g_signal_new ("node-drag-begin",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GtkNodesNodeViewClass, node_drag_begin),
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE,
+                  1, GTKNODES_TYPE_NODE);
+
+  /**
+   * GtkNodesNodeSocket::node-drag-end:
+   * @widget: the object which received the signal.
+   *
+   * The ::node-drag-begin signal is emitted when the user ends a drag
+   * on the socket handle.
+   *
+   */
+
+  node_view_signals[NODE_DRAG_END] =
+    g_signal_new ("node-drag-end",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GtkNodesNodeViewClass, node_drag_begin),
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE,
+                  1, GTKNODES_TYPE_NODE);
+
+
 }
 
 static void
@@ -738,9 +790,14 @@ gtk_nodes_node_view_child_button_press_event (GtkWidget        *widget,
                                                        (gint) event->x,
                                                        (gint) event->y);
       if (inside)
+        {
         priv->action = ACTION_RESIZE;
+        }
       else
+        {
         priv->action = ACTION_DRAG_CHILD;
+        g_signal_emit (node_view, node_view_signals[NODE_DRAG_BEGIN], 0, child->widget);
+        }
 
       child->start_x = (gint) event->x;
       child->start_y = (gint) event->y;
@@ -770,6 +827,9 @@ gtk_nodes_node_view_child_button_release_event (GtkWidget         *widget,
   if (event->button == GDK_BUTTON_PRIMARY)
     gtk_nodes_node_unblock_expander (GTKNODES_NODE (child->widget));
 
+  if (priv->action == ACTION_DRAG_CHILD)
+    g_signal_emit (node_view, node_view_signals[NODE_DRAG_END], 0, child->widget);
+
   priv->action = ACTION_NONE;
 
   /* "raise" last clicked window, drawing occurs from start -> end of list */
@@ -781,10 +841,10 @@ gtk_nodes_node_view_child_button_release_event (GtkWidget         *widget,
 }
 
 static gboolean
-gtk_nodes_node_view_drag_begin_event (GtkWidget           *widget,
-                                      gint                 x0,
-                                      gint                 y0,
-                                      GtkNodesNodeViewPrivate *priv)
+gtk_nodes_node_view_socket_drag_begin_event (GtkWidget           *widget,
+                                             gint                 x0,
+                                             gint                 y0,
+                                             GtkNodesNodeViewPrivate *priv)
 {
   priv->action = ACTION_DRAG_CON;
   priv->x0 = x0;
@@ -794,8 +854,8 @@ gtk_nodes_node_view_drag_begin_event (GtkWidget           *widget,
 }
 
 static gboolean
-gtk_nodes_node_view_drag_end_event (GtkWidget           *widget,
-                                    GtkNodesNodeViewPrivate *priv)
+gtk_nodes_node_view_socket_drag_end_event (GtkWidget           *widget,
+                                           GtkNodesNodeViewPrivate *priv)
 {
   priv->action = ACTION_NONE;
 
@@ -965,13 +1025,13 @@ gtk_nodes_node_view_add (GtkContainer *container,
   if (GTKNODES_IS_NODE (child->widget))
     {
       g_signal_connect(G_OBJECT (widget),
-                       "node-drag-begin",
-                       G_CALLBACK (gtk_nodes_node_view_drag_begin_event),
+                       "node-socket-drag-begin",
+                       G_CALLBACK (gtk_nodes_node_view_socket_drag_begin_event),
                        priv);
 
       g_signal_connect(G_OBJECT (widget),
-                       "node-drag-end",
-                       G_CALLBACK (gtk_nodes_node_view_drag_end_event),
+                       "node-socket-drag-end",
+                       G_CALLBACK (gtk_nodes_node_view_socket_drag_end_event),
                        priv);
 
       g_signal_connect(G_OBJECT (widget),

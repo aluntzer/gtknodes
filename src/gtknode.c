@@ -160,8 +160,8 @@ enum {
 /* Signals */
 enum
 {
-	NODE_DRAG_BEGIN,
-	NODE_DRAG_END,
+	NODE_SOCKET_DRAG_BEGIN,
+	NODE_SOCKET_DRAG_END,
 	NODE_FUNC_CLICKED,
 	NODE_SOCKET_CONNECT,
 	NODE_SOCKET_DISCONNECT,
@@ -392,17 +392,17 @@ gtk_nodes_node_class_init (GtkNodesNodeClass *class)
                                                                  GTK_NODES_VIEW_PARAM_RW));
 
   /**
-   * GtkNodesNode::node-drag-begin:
+   * GtkNodesNode::node-socket-drag-begin:
    * @widget: the object which received the signal.
    * @x:      the x coordinate of the event
    * @y:      the y coordinate of the event
    *
-   * The ::node-drag-begin signal is emitted when the user initiates a drag on
+   * The ::node-socket-drag-begin signal is emitted when the user initiates a drag on
    * a node socket. Coordinates are given with respect to the parent.
    */
 
-	node_signals[NODE_DRAG_BEGIN] =
-    g_signal_new ("node-drag-begin",
+	node_signals[NODE_SOCKET_DRAG_BEGIN] =
+    g_signal_new ("node-socket-drag-begin",
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_FIRST,
                   0,
@@ -412,15 +412,15 @@ gtk_nodes_node_class_init (GtkNodesNodeClass *class)
                   2, G_TYPE_INT, G_TYPE_INT);
 
   /**
-   * GtkNodesNode::node-drag-end:
+   * GtkNodesNode::node-socket-drag-end:
    * @widget: the object which received the signal.
    *
-   * The ::node-drag-end signal is emitted when the user ends a drag operation
+   * The ::node-socket-drag-end signal is emitted when the user ends a drag operation
    * on a node socket.
    */
 
-	node_signals[NODE_DRAG_END] =
-    g_signal_new ("node-drag-end",
+	node_signals[NODE_SOCKET_DRAG_END] =
+    g_signal_new ("node-socket-drag-end",
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_FIRST,
                   0,
@@ -1141,7 +1141,7 @@ gtk_nodes_node_socket_drag_begin (GtkWidget    *widget,
   gtk_widget_get_allocation (widget, &alloc_socket);
   gtk_widget_get_allocation (GTK_WIDGET (node), &alloc_node);
 
-	g_signal_emit (node, node_signals[NODE_DRAG_BEGIN], 0,
+	g_signal_emit (node, node_signals[NODE_SOCKET_DRAG_BEGIN], 0,
                  alloc_node.x + alloc_socket.x + alloc_socket.width / 2,
                  alloc_node.y + alloc_socket.y + alloc_socket.height / 2);
 }
@@ -1150,7 +1150,7 @@ static void
 gtk_nodes_node_socket_drag_end (GtkWidget    *widget,
                                 GtkNodesNode *node)
 {
-	g_signal_emit (node, node_signals[NODE_DRAG_END], 0);
+	g_signal_emit (node, node_signals[NODE_SOCKET_DRAG_END], 0);
 }
 
 

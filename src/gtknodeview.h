@@ -57,11 +57,12 @@ struct _GtkNodesNodeViewClass
 {
   GtkContainerClass parent_class;
 
+  void (* node_drag_begin) (GtkWidget *widget);
+  void (* node_drag_end)   (GtkWidget *widget);
+
   /* padding for future expansion */
   void (*_gtk_reserved1) (void);
   void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
 };
 
 
