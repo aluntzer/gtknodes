@@ -103,7 +103,7 @@ the C demonstrator and in class NumberNode for the Python demo (examples/img.py)
 
 # API
 
-You can find a gtkdoc rendering of the API [here](https://www.univie.ac.at/space/gtknodes/index.html).
+You can find a gtkdoc rendering of the API [here](https://uviespace.univie.ac.at/gtknodes/index.html).
 
 
 # Screenshots
