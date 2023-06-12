@@ -129,16 +129,16 @@ GDK_AVAILABLE_IN_ALL
 void                gtk_nodes_node_socket_set_key             (GtkNodesNodeSocket         *socket,
 						                                                   guint                       key);
 GDK_AVAILABLE_IN_ALL
-guint               gtk_nodes_node_socket_get_key             (GtkNodesNodeSocket         *socket);
+GtkNodesNodeSocketIO gtk_nodes_node_socket_get_key             (GtkNodesNodeSocket         *socket);
 
 GDK_AVAILABLE_IN_ALL
-guint               gtk_nodes_node_socket_get_remote_key      (GtkNodesNodeSocket         *socket);
+GtkNodesNodeSocketIO gtk_nodes_node_socket_get_remote_key      (GtkNodesNodeSocket         *socket);
 
 GDK_AVAILABLE_IN_ALL
 void                gtk_nodes_node_socket_set_id              (GtkNodesNodeSocket         *socket,
 						                                                   guint                       id);
 GDK_AVAILABLE_IN_ALL
-guint               gtk_nodes_node_socket_get_id              (GtkNodesNodeSocket         *socket);
+GtkNodesNodeSocketIO gtk_nodes_node_socket_get_id              (GtkNodesNodeSocket         *socket);
 
 GDK_AVAILABLE_IN_ALL
 gboolean            gtk_nodes_node_socket_write               (GtkNodesNodeSocket         *socket,
