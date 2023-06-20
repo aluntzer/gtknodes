@@ -1058,8 +1058,6 @@ gtk_nodes_node_view_add (GtkContainer *container,
     gtk_widget_set_parent_window (child->widget, priv->event_window);
 
   gtk_widget_set_parent (widget, GTK_WIDGET (container));
-
-  gtk_widget_show_all (GTK_WIDGET (node_view));
 }
 
 static GtkNodesNodeViewChild*

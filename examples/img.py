@@ -930,16 +930,19 @@ class Demo(object):
         self.node_view.load("py_img_proc.xml")
 
     def create_numnode(self, widget=None):
-        self.node_view.add(NumberNode())
-        self.node_view.show_all()
+        node = NumberNode()
+        self.node_view.add(node)
+        node.show_all()
 
     def create_opernode(self, widget=None):
-        self.node_view.add(OperationNode())
-        self.node_view.show_all()
+        node = OperationNode()
+        self.node_view.add(node)
+        node.show_all()
 
     def create_plotnode(self, widget=None):
-        self.node_view.add(PlotNode())
-        self.node_view.show_all()
+        node = PlotNode()
+        self.node_view.add(node)
+        node.show_all()
 
     def create_imgsrcnode(self, widget=None):
 
@@ -955,39 +958,47 @@ class Demo(object):
         self.node_view.child_set_property(node, "x", pos[1]);
         # we set x only, we're out of the canvas when selecting from the button bar
         # self.node_view.child_set_property(node, "y", pos[2]);
-        self.node_view.show_all()
+        node.show_all()
 
     def create_imgpltnode(self, widget=None):
-        self.node_view.add(ImgPltNode())
-        self.node_view.show_all()
+        node = ImgPltNode()
+        self.node_view.add(node)
+        node.show_all()
 
     def create_imgmsknode(self, widget=None):
-        self.node_view.add(ImgMaskNode())
-        self.node_view.show_all()
+        node = ImgMaskNode()
+        self.node_view.add(node)
+        node.show_all()
 
     def create_imgrotnode(self, widget=None):
-        self.node_view.add(ImgRotateNode())
-        self.node_view.show_all()
+        node = ImgRotateNode()
+        self.node_view.add(node)
+        node.show_all()
 
     def create_imgcropnode(self, widget=None):
-        self.node_view.add(ImgCropNode())
-        self.node_view.show_all()
+        node = ImgCropNode()
+        self.node_view.add(node)
+        node.show_all()
 
     def create_imgflipnode(self, widget=None):
-        self.node_view.add(ImgFlipNode())
-        self.node_view.show_all()
+        node = ImgFlipNode()
+        self.node_view.add(node)
+        node.show_all()
 
     def create_imgblurnode(self, widget=None):
-        self.node_view.add(ImgBlurNode())
-        self.node_view.show_all()
+        node = ImgBlurNode()
+        self.node_view.add(node)
+        node.show_all()
 
     def create_imgsobelnode(self, widget=None):
-        self.node_view.add(ImgSobelNode())
-        self.node_view.show_all()
+        node = ImgSobelNode()
+        self.node_view.add(node)
+        node.show_all()
 
     def create_imgopnode(self, widget=None):
-        self.node_view.add(ImgOpNode())
-        self.node_view.show_all()
+        node = ImgOpNode()
+        self.node_view.add(node)
+        node.show_all()
 
 
     def do_quit(self, widget=None, data=None):

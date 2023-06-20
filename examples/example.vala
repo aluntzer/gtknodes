@@ -54,6 +54,7 @@ int main (string[] args)
 
 
 	node_view.add(node);
+	node.show();
 	window.add(node_view);
 	window.show_all();
 

@@ -47,6 +47,12 @@ The Node can be collapsed by clicking the #GtkExpander which will hide the
 node items, and show a compact representation of the node with just the
 GtkExpander and the sockets visible.
 
+> **_NOTE:_** When adding a node to the NodeView, make sure to call
+> gtk_widget_show_all() on the Node widget to show the widget along with the
+> content. This was changed from the previous behaviour where
+> gtk_nodes_node_view_add() called show_all() on the NodeView, leading to
+> undesirable effects when adding new nodes.
+
 
 ## Data Exchange
 

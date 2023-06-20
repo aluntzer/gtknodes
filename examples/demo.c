@@ -37,6 +37,7 @@ static void node_view_create_pulse_cb(GtkWidget *menu, GtkWidget *node_view)
 
 	w = node_pulse_new();
 	gtk_container_add(GTK_CONTAINER(node_view), w);
+	gtk_widget_show_all(w);
 
 	g_value_init(&pos, G_TYPE_INT);
 
@@ -45,51 +46,79 @@ static void node_view_create_pulse_cb(GtkWidget *menu, GtkWidget *node_view)
 
 	g_value_set_int (&pos, y);
 	gtk_container_child_set_property(GTK_CONTAINER(node_view), w, "y", &pos);
+
 }
 
 static void node_view_create_step_cb(GtkWidget *menu, GtkWidget *node_view)
 {
-	gtk_container_add(GTK_CONTAINER(node_view), node_step_new());
+	GtkWidget *w = node_step_new();
+
+	gtk_container_add(GTK_CONTAINER(node_view), w);
+	gtk_widget_show_all(w);
 }
 
 static void node_view_create_node_binary_decode_cb(GtkWidget *menu, GtkWidget *node_view)
 {
-	gtk_container_add(GTK_CONTAINER(node_view), node_binary_decode_new());
+	GtkWidget *w = node_binary_decode_new();
+
+	gtk_container_add(GTK_CONTAINER(node_view), w);
+	gtk_widget_show_all(w);
 }
 
 static void node_view_create_node_binary_encode_cb(GtkWidget *menu, GtkWidget *node_view)
 {
-	gtk_container_add(GTK_CONTAINER(node_view), node_binary_encode_new());
+	GtkWidget *w = node_binary_encode_new();
+
+	gtk_container_add(GTK_CONTAINER(node_view), w);
+	gtk_widget_show_all(w);
 }
 
 static void node_view_create_node_convert_number_cb(GtkWidget *menu, GtkWidget *node_view)
 {
-	gtk_container_add(GTK_CONTAINER(node_view), node_convert_number_new());
+	GtkWidget *w = node_convert_number_new();
+
+	gtk_container_add(GTK_CONTAINER(node_view), w);
+	gtk_widget_show_all(w);
 }
 
 static void node_view_create_node_show_number_cb(GtkWidget *menu, GtkWidget *node_view)
 {
-	gtk_container_add(GTK_CONTAINER(node_view), node_show_number_new());
+	GtkWidget *w = node_show_number_new();
+
+	gtk_container_add(GTK_CONTAINER(node_view), w);
+	gtk_widget_show_all(w);
 }
 
 static void node_view_create_node_bitwise_and_cb(GtkWidget *menu, GtkWidget *node_view)
 {
-	gtk_container_add(GTK_CONTAINER(node_view), node_bitwise_and_new());
+	GtkWidget *w = node_bitwise_and_new();
+
+	gtk_container_add(GTK_CONTAINER(node_view), w);
+	gtk_widget_show_all(w);
 }
 
 static void node_view_create_node_bitwise_or_cb(GtkWidget *menu, GtkWidget *node_view)
 {
-	gtk_container_add(GTK_CONTAINER(node_view), node_bitwise_or_new());
+	GtkWidget *w = node_bitwise_or_new();
+
+	gtk_container_add(GTK_CONTAINER(node_view), w);
+	gtk_widget_show_all(w);
 }
 
 static void node_view_create_node_bitwise_xor_cb(GtkWidget *menu, GtkWidget *node_view)
 {
-	gtk_container_add(GTK_CONTAINER(node_view), node_bitwise_xor_new());
+	GtkWidget *w = node_bitwise_xor_new();
+
+	gtk_container_add(GTK_CONTAINER(node_view), w);
+	gtk_widget_show_all(w);
 }
 
 static void node_view_create_node_bitwise_not_cb(GtkWidget *menu, GtkWidget *node_view)
 {
-	gtk_container_add(GTK_CONTAINER(node_view), node_bitwise_not_new());
+	GtkWidget *w = node_bitwise_not_new();
+
+	gtk_container_add(GTK_CONTAINER(node_view), w);
+	gtk_widget_show_all(w);
 }
 
 static void node_view_save_cb(GtkWidget *widget, GtkWidget *node_view)
