@@ -29,8 +29,7 @@
 #error "Only <gtk/gtk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcontainer.h>
-
+#include <gtk/gtkwidget.h>
 
 G_BEGIN_DECLS
 
@@ -48,14 +47,14 @@ typedef struct _GtkNodesNodeViewClass       GtkNodesNodeViewClass;
 
 struct _GtkNodesNodeView
 {
-  GtkContainer widget;
+  GtkWidget widget;
 
   GtkNodesNodeViewPrivate *priv;
 };
 
 struct _GtkNodesNodeViewClass
 {
-  GtkContainerClass parent_class;
+  GtkWidgetClass parent_class;
 
   void (* node_drag_begin) (GtkWidget *widget);
   void (* node_drag_end)   (GtkWidget *widget);
