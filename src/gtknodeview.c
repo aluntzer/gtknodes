@@ -25,8 +25,6 @@
 #include "gtknodesocket.h"
 #include "gtknodeview.h"
 
-#include "gtk/gtkdragdest.h"
-
 #include "gtk/gtkbuilder.h"
 #include "glib/gprintf.h"
 #include "glib/gstdio.h"
@@ -82,7 +80,7 @@ struct _GtkNodesNodeViewPrivate
 {
   GList     *children;
   GList     *connections;
-  GdkWindow *event_window;
+  GdkSurface *event_surface;
 
   GdkCursor *cursor_default;
   GdkCursor *cursor_se_resize;
@@ -141,10 +139,7 @@ static void     gtk_nodes_node_view_add                 (GtkContainer        *wi
                                                          GtkWidget           *child);
 static void     gtk_nodes_node_view_remove              (GtkContainer        *widget,
                                                          GtkWidget           *child);
-static void     gtk_nodes_node_view_forall              (GtkContainer        *container,
-                                                         gboolean             include_internals,
-                                                         GtkCallback          callback,
-                                                         gpointer             callback_data);
+
 static GType    gtk_nodes_node_view_child_type          (GtkContainer        *container);
 
 static void     gtk_nodes_node_view_set_child_property  (GtkContainer         *container,
@@ -186,7 +181,6 @@ static void gtk_nodes_node_view_class_init(GtkNodesNodeViewClass *class)
 
 
   widget_class    = GTK_WIDGET_CLASS(class);
-  container_class = GTK_CONTAINER_CLASS(class);
   gobject_class   = G_OBJECT_CLASS (class);
 
   /* widget basics */
@@ -200,15 +194,6 @@ static void gtk_nodes_node_view_class_init(GtkNodesNodeViewClass *class)
   /* widget events */
   widget_class->button_press_event  = gtk_nodes_node_view_button_press_event;
   widget_class->motion_notify_event = gtk_nodes_node_view_motion_notify_event;
-
-
-  /* widget public */
-  container_class->add                = gtk_nodes_node_view_add;
-  container_class->remove             = gtk_nodes_node_view_remove;
-  container_class->forall             = gtk_nodes_node_view_forall;
-  container_class->child_type         = gtk_nodes_node_view_child_type;
-  container_class->set_child_property = gtk_nodes_node_view_set_child_property;
-  container_class->get_child_property = gtk_nodes_node_view_get_child_property;
 
   gtk_container_class_install_child_property (container_class,
                                               CHILD_PROP_X,
@@ -336,8 +321,8 @@ gtk_nodes_node_view_map (GtkWidget *widget)
         gtk_widget_map (child->widget);
     }
 
-  if (priv->event_window)
-    gdk_window_show (priv->event_window);
+  if (priv->event_surface)
+    gdk_window_show (priv->event_surface);
 
 }
 
@@ -349,8 +334,8 @@ gtk_nodes_node_view_unmap (GtkWidget *widget)
 
   priv = gtk_nodes_node_view_get_instance_private (GTKNODES_NODE_VIEW (widget));
 
-  if (priv->event_window)
-    gdk_window_hide (priv->event_window);
+  if (priv->event_surface)
+    gdk_window_hide (priv->event_surface);
 
   GTK_WIDGET_CLASS (gtk_nodes_node_view_parent_class)->unmap (widget);
 }
@@ -360,7 +345,7 @@ static void
 gtk_nodes_node_view_realize (GtkWidget *widget)
 {
   GtkNodesNodeViewPrivate *priv;
-  GdkWindow          *window;
+  GdkSurface          *surface;
   GtkAllocation       allocation;
   GdkWindowAttr       attributes;
   gint                attributes_mask;
@@ -393,8 +378,8 @@ gtk_nodes_node_view_realize (GtkWidget *widget)
   g_object_ref (window);
   gtk_widget_set_window (widget, window);
 
-  priv->event_window = gdk_window_new (window, &attributes, attributes_mask);
-  gtk_widget_register_window (widget, priv->event_window);
+  priv->event_surface = gdk_window_new (window, &attributes, attributes_mask);
+  gtk_widget_register_window (widget, priv->event_surface);
 
 
   l = priv->children;
@@ -405,7 +390,7 @@ gtk_nodes_node_view_realize (GtkWidget *widget)
 
       l = l->next;
 
-      gtk_widget_set_parent_window (child->widget, priv->event_window);
+      gtk_widget_set_parent_window (child->widget, priv->event_surface);
     }
 }
 
@@ -417,11 +402,11 @@ gtk_nodes_node_view_unrealize (GtkWidget *widget)
 
   priv = gtk_nodes_node_view_get_instance_private (GTKNODES_NODE_VIEW (widget));
 
-  if (priv->event_window)
+  if (priv->event_surface)
     {
-      gtk_widget_unregister_window (widget, priv->event_window);
-      gdk_window_destroy (priv->event_window);
-      priv->event_window = NULL;
+      gtk_widget_unregister_window (widget, priv->event_surface);
+      gdk_window_destroy (priv->event_surface);
+      priv->event_surface = NULL;
     }
 
   GTK_WIDGET_CLASS (gtk_nodes_node_view_parent_class)->unrealize (widget);
@@ -489,10 +474,10 @@ gtk_nodes_node_view_size_allocate (GtkWidget     *widget,
   if (!gtk_widget_get_realized (widget))
     return;
 
-  if (!priv->event_window)
+  if (!priv->event_surface)
     return;
 
-  gdk_window_move_resize (priv->event_window,
+  gdk_window_move_resize (priv->event_surface,
                           allocation->x,
                           allocation->y,
                           allocation->width,
@@ -611,7 +596,7 @@ gtk_nodes_node_view_draw (GtkWidget *widget,
 
     }
 
-  if (gtk_cairo_should_draw_window (cr, priv->event_window))
+  if (gtk_cairo_should_draw_window (cr, priv->event_surface))
     GTK_WIDGET_CLASS (gtk_nodes_node_view_parent_class)->draw (widget, cr);
 
   return GDK_EVENT_PROPAGATE;
@@ -1055,7 +1040,7 @@ gtk_nodes_node_view_add (GtkContainer *container,
   priv->children = g_list_append (priv->children, child);
 
   if (gtk_widget_get_realized (GTK_WIDGET (node_view)))
-    gtk_widget_set_parent_window (child->widget, priv->event_window);
+    gtk_widget_set_parent_window (child->widget, priv->event_surface);
 
   gtk_widget_set_parent (widget, GTK_WIDGET (container));
 }
@@ -1105,7 +1090,7 @@ static void
 gtk_nodes_node_cursor_set (GtkNodesNodeView *node_view, Action action)
 {
   GdkCursor *cursor;
-	GdkWindow *window;
+	GdkSurface *surface;
   GtkNodesNodeViewPrivate *priv;
 
 
@@ -1197,33 +1182,6 @@ gtk_nodes_node_view_remove (GtkContainer *container,
 
   g_slice_free (GtkNodesNodeViewChild, l->data);
   g_list_free_1 (l);
-}
-
-static void
-gtk_nodes_node_view_forall (GtkContainer  *container,
-                            gboolean       include_internals,
-                            GtkCallback    callback,
-                            gpointer       callback_data)
-{
-  GtkNodesNodeView *node_view;
-  GtkNodesNodeViewPrivate *priv;
-  GtkNodesNodeViewChild *c;
-  GtkWidget *w;
-  GList *l;
-
-  node_view = GTKNODES_NODE_VIEW (container);
-  priv = gtk_nodes_node_view_get_instance_private (node_view);
-
-  l = priv->children;
-
-  while (l)
-    {
-      c = l->data;
-      w = c->widget;
-      l = l->next;
-
-      (* callback) (w, callback_data);
-    }
 }
 
 static GType

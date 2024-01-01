@@ -23,10 +23,7 @@
 
 #include "gtknodesocket.h"
 
-#include "gtk/gtkdnd.h"
-#include "gtk/gtkdragdest.h"
 #include "gtk/gtkdragsource.h"
-#include "gtk/gtkgesturemultipress.h"
 
 
 /* gtkprivate.h */
@@ -83,7 +80,7 @@
 
 struct _GtkNodesNodeSocketPrivate
 {
-  GdkWindow	           *event_window;
+  GdkSurface	           *event_surface;
 
   GtkNodesNodeSocketIO  io;              /* the socket IO mode */
   guint                 id;              /* the numeric identifier of the socket */
@@ -631,8 +628,8 @@ gtk_nodes_node_socket_map (GtkWidget *widget)
 
   GTK_WIDGET_CLASS (gtk_nodes_node_socket_parent_class)->map (widget);
 
-  if (priv->event_window)
-    gdk_window_show(priv->event_window);
+  if (priv->event_surface)
+    gdk_window_show(priv->event_surface);
 
 }
 
@@ -646,8 +643,8 @@ gtk_nodes_node_socket_unmap (GtkWidget *widget)
   socket = GTKNODES_NODE_SOCKET (widget);
   priv = gtk_nodes_node_socket_get_instance_private (socket);
 
-  if (priv->event_window)
-    gdk_window_hide (priv->event_window);
+  if (priv->event_surface)
+    gdk_window_hide (priv->event_surface);
 
   GTK_WIDGET_CLASS (gtk_nodes_node_socket_parent_class)->unmap (widget);
 
@@ -659,7 +656,7 @@ static void gtk_nodes_node_socket_realize (GtkWidget *widget)
   GtkNodesNodeSocket *socket;
   GtkNodesNodeSocketPrivate *priv;
   GtkAllocation allocation;
-  GdkWindow *window;
+  GdkSurface *surface;
   GdkWindowAttr attributes;
   gint attributes_mask;
 
@@ -692,9 +689,9 @@ static void gtk_nodes_node_socket_realize (GtkWidget *widget)
 
   attributes_mask = GDK_WA_X | GDK_WA_Y;
 
-  priv->event_window = gdk_window_new (window, &attributes, attributes_mask);
+  priv->event_surface = gdk_window_new (window, &attributes, attributes_mask);
 
-  gtk_widget_register_window (widget, priv->event_window);
+  gtk_widget_register_window (widget, priv->event_surface);
 }
 
 static void
@@ -707,11 +704,11 @@ gtk_nodes_node_socket_unrealize (GtkWidget *widget)
   socket = GTKNODES_NODE_SOCKET (widget);
   priv = gtk_nodes_node_socket_get_instance_private (socket);
 
-  if (priv->event_window)
+  if (priv->event_surface)
   {
-    gtk_widget_unregister_window (widget, priv->event_window);
-    gdk_window_destroy (priv->event_window);
-    priv->event_window = NULL;
+    gtk_widget_unregister_window (widget, priv->event_surface);
+    gdk_window_destroy (priv->event_surface);
+    priv->event_surface = NULL;
   }
 
   g_signal_emit (widget, node_socket_signals[SOCKET_DESTROYED], 0);
@@ -734,11 +731,11 @@ gtk_nodes_node_socket_size_allocate (GtkWidget     *widget,
   if (!gtk_widget_get_realized (widget))
     return;
 
-  if (!priv->event_window)
+  if (!priv->event_surface)
     return;
 
   /* move and resize to circle representation */
-  gdk_window_move_resize (priv->event_window,
+  gdk_window_move_resize (priv->event_surface,
                           (gint) allocation->x,
                           (gint) allocation->y,
                           (gint) (2.0 * priv->radius),

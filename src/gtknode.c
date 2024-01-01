@@ -23,6 +23,7 @@
 #include "gtknode.h"
 #include "gtknodesocket.h"
 
+#include "gtk/gtkgestureclick.h"
 #include "gtk/gtkrender.h"
 #include "gtk/gtkicontheme.h"
 #include "gtk/gtkstylecontext.h"
@@ -87,7 +88,7 @@ typedef struct _GtkNodesNodeChild        GtkNodesNodeChild;
 
 struct _GtkNodesNodePrivate
 {
-  GdkWindow	*event_window;
+  GdkSurface	*event_surface;
   GList		  *children;
 
   guint id;                     /* our numeric id */
@@ -190,10 +191,16 @@ static void       gtk_nodes_node_size_allocate                       (GtkWidget 
 static gboolean   gtk_nodes_node_draw                                (GtkWidget            *widget,
                                                                       cairo_t              *cr);
 /* widget class events */
-static gboolean   gtk_nodes_node_button_press                        (GtkWidget            *widget,
-                                                                      GdkEventButton       *event);
-static gboolean   gtk_nodes_node_button_release                      (GtkWidget            *widget,
-                                                                      GdkEventButton       *event);
+static gboolean   gtk_nodes_node_gesture_press                       (GtkGestureClick* self,
+                                                                      gint n_press,
+                                                                      gdouble x,
+                                                                      gdouble y,
+                                                                      gpointer user_data);
+static gboolean   gtk_nodes_node_gesture_release                     (GtkGestureClick* self,
+                                                                      gint n_press,
+                                                                      gdouble x,
+                                                                      gdouble y,
+                                                                      gpointer user_data);
 
 /* widget class accessibility support */
 static void       gtk_nodes_node_adjust_size_request                 (GtkWidget            *widget,
@@ -202,13 +209,9 @@ static void       gtk_nodes_node_adjust_size_request                 (GtkWidget 
                                                                       gint                  *natural_size);
 
 /* container class methods */
-static void       gtk_nodes_node_forall                              (GtkContainer         *container,
-                                                                      gboolean              include_internals,
-                                                                      GtkCallback           callback,
-                                                                      gpointer              callback_data);
-static void       gtk_nodes_node_add                                 (GtkContainer         *container,
+static void       gtk_nodes_node_add                                 (GtkWidget            *widget,
                                                                       GtkWidget            *child);
-static void       gtk_nodes_node_remove                              (GtkContainer         *widget,
+static void       gtk_nodes_node_remove                              (GtkWidget            *widget,
                                                                       GtkWidget            *child);
 static void       gtk_nodes_node_set_child_property                  (GtkContainer         *container,
                                                                       GtkWidget            *child,
@@ -260,12 +263,10 @@ gtk_nodes_node_class_init (GtkNodesNodeClass *class)
 {
   GObjectClass      *gobject_class;
   GtkWidgetClass    *widget_class;
-  GtkContainerClass *container_class;
 
 
   gobject_class   = G_OBJECT_CLASS (class);
   widget_class    = GTK_WIDGET_CLASS (class);
-  container_class = GTK_CONTAINER_CLASS (class);
 
   /* gobject methods */
   gobject_class->get_property = gtk_nodes_node_get_property;
@@ -280,18 +281,9 @@ gtk_nodes_node_class_init (GtkNodesNodeClass *class)
   widget_class->draw          = gtk_nodes_node_draw;
 
   /* widget events */
-  widget_class->button_press_event   = gtk_nodes_node_button_press;
-  widget_class->button_release_event = gtk_nodes_node_button_release;
 
   /* widget accessibility support */
   widget_class->adjust_size_request = gtk_nodes_node_adjust_size_request;
-
-  /* container class */
-  container_class->forall             = gtk_nodes_node_forall;
-  container_class->add                = gtk_nodes_node_add;
-  container_class->remove             = gtk_nodes_node_remove;
-  container_class->set_child_property = gtk_nodes_node_set_child_property;
-  container_class->get_child_property = gtk_nodes_node_get_child_property;
 
   /* nodes class function for internal property export */
   class->export_properties = NULL;
@@ -514,7 +506,7 @@ static void
 gtk_nodes_node_init (GtkNodesNode *node)
 {
   GtkNodesNodePrivate *priv;
-
+  GtkGestureClick *gesture;
 
   node->priv = gtk_nodes_node_get_instance_private (node);
 
@@ -567,6 +559,15 @@ gtk_nodes_node_init (GtkNodesNode *node)
 
 
   gtk_widget_set_has_window (GTK_WIDGET (node), FALSE);
+
+  gesture = gtk_gesture_click_new ();
+
+  g_signal_connect (gesture, "pressed",
+                    G_CALLBACK(gtk_nodes_node_gesture_press), node);
+  g_signal_connect (gesture, "released",
+                    G_CALLBACK(gtk_nodes_node_gesture_release), node);
+
+  gtk_widget_add_controller (node->parent, GTK_EVENT_CONTROLLER (gesture));
 }
 
 
@@ -662,8 +663,8 @@ gtk_nodes_node_map (GtkWidget *widget)
 
   GTK_WIDGET_CLASS (gtk_nodes_node_parent_class)->map (widget);
 
-  if (priv->event_window)
-      gdk_window_show(priv->event_window);
+  if (priv->event_surface)
+      gdk_window_show(priv->event_surface);
 }
 
 static void
@@ -674,8 +675,8 @@ gtk_nodes_node_unmap (GtkWidget *widget)
 
   priv = gtk_nodes_node_get_instance_private (GTKNODES_NODE (widget));
 
-  if (priv->event_window)
-    gdk_window_hide (priv->event_window);
+  if (priv->event_surface)
+    gdk_window_hide (priv->event_surface);
 
   GTK_WIDGET_CLASS (gtk_nodes_node_parent_class)->unmap (widget);
 }
@@ -684,7 +685,7 @@ static void
 gtk_nodes_node_realize (GtkWidget *widget)
 {
   GtkNodesNodePrivate *priv;
-  GdkWindow      *window;
+  GdkSurface     *surface;
   GtkAllocation   allocation;
   GdkWindowAttr   attributes;
   gint            attributes_mask;
@@ -721,8 +722,8 @@ gtk_nodes_node_realize (GtkWidget *widget)
   attributes_mask = GDK_WA_X | GDK_WA_Y;
 
 
-  priv->event_window = gdk_window_new (window, &attributes, attributes_mask);
-  gtk_widget_register_window (widget, priv->event_window);
+  priv->event_surface = gdk_window_new (window, &attributes, attributes_mask);
+  gtk_widget_register_window (widget, priv->event_surface);
 
   l = priv->children;
 
@@ -732,11 +733,11 @@ gtk_nodes_node_realize (GtkWidget *widget)
 
     l = l->next;
 
-    gtk_widget_set_parent_window (child->item,   priv->event_window);
-    gtk_widget_set_parent_window (child->socket, priv->event_window);
+    gtk_widget_set_parent_window (child->item,   priv->event_surface);
+    gtk_widget_set_parent_window (child->socket, priv->event_surface);
   }
 
-  gtk_widget_set_parent_window (priv->expander, priv->event_window);
+  gtk_widget_set_parent_window (priv->expander, priv->event_surface);
 
 }
 
@@ -748,11 +749,11 @@ gtk_nodes_node_unrealize (GtkWidget *widget)
 
   priv = gtk_nodes_node_get_instance_private (GTKNODES_NODE (widget));
 
-  if (priv->event_window)
+  if (priv->event_surface)
   {
-    gtk_widget_unregister_window (widget, priv->event_window);
-    gdk_window_destroy (priv->event_window);
-    priv->event_window = NULL;
+    gtk_widget_unregister_window (widget, priv->event_surface);
+    gdk_window_destroy (priv->event_surface);
+    priv->event_surface = NULL;
   }
 
   if (priv->activate_id) {
@@ -797,7 +798,9 @@ gtk_nodes_node_adjust_size_request (GtkWidget      *widget,
 
 static void
 gtk_nodes_node_size_allocate (GtkWidget        *widget,
-                              GtkAllocation    *allocation)
+                              int               width,
+                              int               height,
+                              int               baseline)
 {
   GtkNodesNode *node;
   GtkNodesNodePrivate *priv;
@@ -811,8 +814,8 @@ gtk_nodes_node_size_allocate (GtkWidget        *widget,
 
   priv->allocation.x      = allocation->x;
   priv->allocation.y      = allocation->y;
-  priv->allocation.width  = allocation->width;
-  priv->allocation.height = allocation->height;
+  priv->allocation.width  = width;
+  priv->allocation.height = height;
 
   top    = priv->padding.top    + priv->margin.top;
   left   = priv->padding.left   + priv->margin.left;
@@ -861,10 +864,10 @@ gtk_nodes_node_size_allocate (GtkWidget        *widget,
   if (!gtk_widget_get_realized (widget))
     return;
 
-  if (!priv->event_window)
+  if (!priv->event_surface)
     return;
 
-  gdk_window_move_resize (priv->event_window,
+  gdk_window_move_resize (priv->event_surface,
                           priv->allocation.x,
                           priv->allocation.y,
                           priv->allocation.width,
@@ -897,10 +900,14 @@ gtk_nodes_node_draw (GtkWidget *widget,
 }
 
 static gboolean
-gtk_nodes_node_button_press (GtkWidget      *widget,
-                             GdkEventButton *event)
+gtk_nodes_node_gesture_press (GtkGestureClick* self,
+                              gint n_press,
+                              gdouble x,
+                              gdouble y,
+                              gpointer user_data)
 {
-  GdkRectangle point = {event->x, event->y, 1, 1};
+  GdkRectangle point = {x, y, 1, 1};
+  GtkWidget *widget = user_data;
   GtkNodesNodePrivate *priv;
 
   priv = gtk_nodes_node_get_instance_private (GTKNODES_NODE (widget));
@@ -915,9 +922,13 @@ gtk_nodes_node_button_press (GtkWidget      *widget,
 }
 
 static gboolean
-gtk_nodes_node_button_release (GtkWidget      *widget,
-                               GdkEventButton *event)
+gtk_nodes_node_gesture_release (GtkGestureClick* self,
+                                gint n_press,
+                                gdouble x,
+                                gdouble y,
+                                gpointer user_data)
 {
+  GtkNodesNode *widget = user_data;
   GtkNodesNodePrivate *priv;
 
   priv = gtk_nodes_node_get_instance_private (GTKNODES_NODE (widget));
@@ -926,8 +937,8 @@ gtk_nodes_node_button_release (GtkWidget      *widget,
 	  g_signal_emit (widget, node_signals[NODE_FUNC_CLICKED], 0);
   }
 
-  if (GDK_IS_WINDOW(priv->event_window)) {
-    gdk_window_raise(priv->event_window);
+  if (GDK_IS_SURFACE(priv->event_surface)) {
+    gdk_window_raise(priv->event_surface);
   }
 
   return TRUE;
@@ -936,16 +947,16 @@ gtk_nodes_node_button_release (GtkWidget      *widget,
 /* Container Methods */
 
 static void
-gtk_nodes_node_add (GtkContainer *container,
+gtk_nodes_node_add (GtkWidget    *widget,
                     GtkWidget    *child)
 {
-  GtkNodesNode *node = GTKNODES_NODE (container);
+  GtkNodesNode *node = GTKNODES_NODE (widget);
 
   gtk_nodes_node_item_add_real (node, child, GTKNODES_NODE_SOCKET_DISABLE);
 }
 
 static void
-gtk_nodes_node_remove (GtkContainer *container,
+gtk_nodes_node_remove (GtkWidget    *container,
                        GtkWidget    *widget)
 {
   GtkNodesNodePrivate *priv;
@@ -979,36 +990,6 @@ gtk_nodes_node_remove (GtkContainer *container,
     }
 }
 
-static void
-gtk_nodes_node_forall (GtkContainer  *container,
-                       gboolean       include_internals,
-                       GtkCallback    callback,
-                       gpointer       callback_data)
-{
-  GtkNodesNodePrivate *priv;
-  GList *l;
-
-  priv = gtk_nodes_node_get_instance_private (GTKNODES_NODE (container));
-
-  GTK_CONTAINER_CLASS (gtk_nodes_node_parent_class)->forall (container,
-                                                             include_internals,
-                                                             callback,
-                                                             callback_data);
-  if (!include_internals)
-    return;
-
-
-  l = priv->children;
-
-  while (l)
-  {
-    GtkNodesNodeChild *child = l->data;
-    l = l->next;
-
-    (* callback) (child->socket, callback_data);
-  }
-}
-
 static GtkNodesNodeChild*
 gtk_nodes_node_get_child (GtkNodesNode  *node,
                           GtkWidget *widget)
@@ -1035,14 +1016,14 @@ gtk_nodes_node_get_child (GtkNodesNode  *node,
 }
 
 static void
-gtk_nodes_node_set_child_property (GtkContainer *container,
+gtk_nodes_node_set_child_property (GtkWidget    *widget,
                                    GtkWidget    *child,
                                    guint         property_id,
                                    const GValue *value,
                                    GParamSpec   *pspec)
 {
   GtkNodesNodeChild *node_child;
-  GtkNodesNode *node = GTKNODES_NODE (container);
+  GtkNodesNode *node = GTKNODES_NODE (widget);
 
   node_child = gtk_nodes_node_get_child (node, child);
 
@@ -1077,21 +1058,21 @@ gtk_nodes_node_set_child_property (GtkContainer *container,
       break;
 
     default:
-      GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id,
+      GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (widget, property_id,
                                                     pspec);
       break;
     }
 }
 
 static void
-gtk_nodes_node_get_child_property (GtkContainer *container,
+gtk_nodes_node_get_child_property (GtkWidget    *widget,
                                    GtkWidget    *child,
                                    guint         property_id,
                                    GValue       *value,
                                    GParamSpec   *pspec)
 {
   GtkNodesNodeChild *node_child;
-  GtkNodesNode *node = GTKNODES_NODE (container);
+  GtkNodesNode *node = GTKNODES_NODE (widget);
 
   node_child = gtk_nodes_node_get_child (node, child);
 
@@ -1122,7 +1103,7 @@ gtk_nodes_node_get_child_property (GtkContainer *container,
       break;
 
     default:
-      GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id,
+      GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (widget, property_id,
                                                     pspec);
       break;
     }
@@ -1269,10 +1250,10 @@ gtk_nodes_node_item_add_real (GtkNodesNode         *node,
   }
 
 
-  if (priv->event_window)
+  if (priv->event_surface)
   {
-    gtk_widget_set_parent_window (child_info->item,   priv->event_window);
-    gtk_widget_set_parent_window (child_info->socket, priv->event_window);
+    gtk_widget_set_parent_window (child_info->item,   priv->event_surface);
+    gtk_widget_set_parent_window (child_info->socket, priv->event_surface);
   }
 
 

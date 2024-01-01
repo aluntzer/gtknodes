@@ -24,7 +24,7 @@ static void node_view_create_pulse_cb(GtkWidget *menu, GtkWidget *node_view)
 {
 	gint x, y;
 	GtkWidget *w;
-	GdkWindow *win;
+	GdkSurface *surface;
 	GdkSeat *seat;
 	GdkDevice *ptr;
 	GValue pos = G_VALUE_INIT;
